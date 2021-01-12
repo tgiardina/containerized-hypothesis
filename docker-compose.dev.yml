@@ -1,0 +1,50 @@
+version: "3.3"
+
+services:
+  hypothesis_client:
+    build: ./hypothesis-client
+    command: make dev
+    environment:
+      SIDEBAR_APP_URL: http://localhost:5000/app.html
+    ports:
+      - "3000:3000"
+      - "3001:3001"    
+    volumes:
+      - ./hypothesis-client:/usr/src/app      
+
+  hypothesis_h: 
+    network_mode: host
+    build: ./hypothesis-h
+    command: bash -c "./scripts/await-elastic.sh && make dev"
+    depends_on:
+      - postgres
+      - elasticsearch
+      - rabbit
+    environment:
+      CLIENT_OAUTH_ID: ${CLIENT_ID}  
+      CLIENT_URL: http://localhost:3001/hypothesis       
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./hypothesis-h:/usr/src/app/
+
+  postgres:
+    image: postgres:11.5-alpine   
+    ports:
+      - '127.0.0.1:5432:5432'
+    healthcheck:
+        test: ["CMD", "pg_isready", "-U", "postgres"]
+        interval: 1s
+
+  elasticsearch:
+    image: hypothesis/elasticsearch:latest
+    ports:
+      - '127.0.0.1:9200:9200'
+    environment:
+      - discovery.type=single-node
+
+  rabbit:
+    image: rabbitmq:3.6-management-alpine
+    ports:
+      - '127.0.0.1:5672:5672'
+      - '127.0.0.1:15672:15672'

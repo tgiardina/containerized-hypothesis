@@ -1,0 +1,9 @@
+[submodule "hypothesis-client"]
+	path = hypothesis-client
+	url = https://github.com/tgiardina/hypothesis-client.git
+[submodule "hypothesis-h"]
+	path = hypothesis-h
+	url = https://github.com/tgiardina/hypothesis-h.git
+[submodule "hypothesis-pdfjs"]
+	path = hypothesis-pdfjs
+	url = https://github.com/tgiardina/hypothesis-pdfjs.git
