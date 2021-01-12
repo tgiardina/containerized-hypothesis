@@ -8,10 +8,12 @@ services:
     build: ./hypothesis-pdfjs
 
   hypothesis_client:
-    build: ./hypothesis-client
+    build: 
+      context: ./hypothesis-client
+      dockerfile: Dockerfile
+      args:
+        SIDEBAR_APP_URL: ${SIDEBAR_APP_URL}
     command: make serve
-    environment:
-      SIDEBAR_APP_URL: /h/app.html
 
   hypothesis_h: 
     build: ./hypothesis-h
@@ -22,7 +24,7 @@ services:
       - rabbit
     environment:
       CLIENT_OAUTH_ID: ${CLIENT_ID}  
-      CLIENT_URL: /hypothesis      
+      CLIENT_URL: http:/rpp.tommycodes.com/hypothesis      
     volumes:
       - ./hypothesis-h:/usr/src/app/
 
