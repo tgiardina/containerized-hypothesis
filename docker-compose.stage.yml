@@ -13,43 +13,44 @@ services:
       dockerfile: Dockerfile
       args:
         SIDEBAR_APP_URL: ${SIDEBAR_APP_URL}
+        CLIENT_ID: ${CLIENT_ID}        
     command: make serve
 
-  hypothesis_h: 
-    build: ./hypothesis-h
-    command: bash -c "./scripts/await-elastic.sh && make dev"
-    depends_on:
-      - postgres
-      - elasticsearch
-      - rabbit
-    environment:
-      CLIENT_OAUTH_ID: ${CLIENT_ID}  
-      CLIENT_URL: http:/rpp.tommycodes.com/hypothesis      
-    volumes:
-      - ./hypothesis-h:/usr/src/app/
+  # hypothesis_h: 
+  #   build: ./hypothesis-h
+  #   command: bash -c "./scripts/await-elastic.sh && make dev"
+  #   depends_on:
+  #     - postgres
+  #     - elasticsearch
+  #     - rabbit
+  #   environment:
+  #     CLIENT_OAUTH_ID: ${CLIENT_ID}  
+  #     CLIENT_URL: http:/rpp.tommycodes.com/hypothesis      
+  #   volumes:
+  #     - ./hypothesis-h:/usr/src/app/
 
-  postgres:
-    image: postgres:11.5-alpine   
-    healthcheck:
-        test: ["CMD", "pg_isready", "-U", "postgres"]
-        interval: 1s
+  # postgres:
+  #   image: postgres:11.5-alpine   
+  #   healthcheck:
+  #       test: ["CMD", "pg_isready", "-U", "postgres"]
+  #       interval: 1s
 
-  elasticsearch:
-    image: hypothesis/elasticsearch:latest
-    environment:
-      - discovery.type=single-node
+  # elasticsearch:
+  #   image: hypothesis/elasticsearch:latest
+  #   environment:
+  #     - discovery.type=single-node
 
-  rabbit:
-    image: rabbitmq:3.6-management-alpine
+  # rabbit:
+  #   image: rabbitmq:3.6-management-alpine
 
-  nginx:
-    image: nginx:latest
-    depends_on:
-      - site
-      - hypothesis_client
-      - hypothesis_pdfjs
-      - hypothesis_h
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf          
+  # nginx:
+  #   image: nginx:latest
+  #   depends_on:
+  #     - site
+  #     - hypothesis_client
+  #     - hypothesis_pdfjs
+  #     - hypothesis_h
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf          
