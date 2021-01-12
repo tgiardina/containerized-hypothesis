@@ -14,7 +14,6 @@ services:
       args:
         SIDEBAR_APP_URL: ${SIDEBAR_APP_URL}
         CLIENT_ID: ${CLIENT_ID}        
-    command: make serve
 
   nginx:
     image: nginx:latest
