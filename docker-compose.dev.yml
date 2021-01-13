@@ -13,7 +13,6 @@ services:
       - ./hypothesis-client:/usr/src/app      
 
   hypothesis_h: 
-    network_mode: host
     build: ./hypothesis-h
     command: bash -c "./scripts/await-elastic.sh && make dev"
     depends_on:
@@ -48,3 +47,13 @@ services:
     ports:
       - '127.0.0.1:5672:5672'
       - '127.0.0.1:15672:15672'
+
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - hypothesis_client
+      - hypothesis_h
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf                    
