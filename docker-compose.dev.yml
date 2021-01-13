@@ -4,6 +4,8 @@ services:
   hypothesis_client:
     build: ./hypothesis-client
     command: make dev
+    environment:
+      SIDEBAR_APP_URL: ${SIDEBAR_APP_URL}    
     volumes:
       - ./hypothesis-client:/usr/src/app      
 
