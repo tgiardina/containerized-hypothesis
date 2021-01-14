@@ -3,5 +3,5 @@ help:
 	@echo 'make deploy - Starts a production server.'
 
 .PHONY: deploy
-stage: 
+deploy: 
 	docker-compose -f docker-compose.yml up --build
